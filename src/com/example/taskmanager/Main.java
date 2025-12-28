@@ -37,5 +37,14 @@ public class Main {
         System.out.println("All users:");
         userService.getAllUsers()
                 .forEach(System.out::println);
+
+        System.out.println("\nHIGH priority tasks:");
+        taskService.getTasksByPriority(Priority.HIGH)
+                .forEach(task ->
+                        System.out.println(task.getTitle())
+                );
+
     }
+
+
 }

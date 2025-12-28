@@ -83,4 +83,32 @@ public class TaskService {
                 .orElseThrow(()->
                         new UserNotFoundException(userId));
     }
+
+    public List<Task> getTasksByStatus(TaskStatus status) {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getStatus() == status)
+                .toList();
+    }
+
+    public List<Task> getTasksByPriority(Priority priority) {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getPriority() == priority)
+                .toList();
+    }
+
+    public List<Task> getUserTasksSortedByPriority(UUID userId) {
+        getUserById(userId);
+
+        return taskRepository.findAll().stream()
+                .filter(task -> userId.equals(task.getAssignedUserId()))
+                .sorted((t1,t2) -> t2.getPriority().compareTo(t1.getPriority()))
+                .toList();
+    }
+
+    public List<Task> getTasksByCreatedAt(){
+        return taskRepository.findAll().stream()
+                .sorted((t1,t2)-> t1.getCreatedAt().compareTo(t2.getCreatedAt()))
+                .toList();
+    }
+
 }
